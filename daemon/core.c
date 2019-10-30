@@ -2,7 +2,7 @@
  * @Description: add counter adding
  * @Author: dingli
  * @Date: 2019-10-24 14:12:29
- * @LastEditTime: 2019-10-30 15:55:57
+ * @LastEditTime: 2019-10-30 15:59:34
  * @LastEditors: dingli
  */
 /*
@@ -48,7 +48,6 @@
 
 #define POLL_NEW_UNICAST 0x1
 #define POLL_NEW_MULTICAST 0x2
-#define PI 3.14
 
 static void dump_frame(const char *dump_file, const struct pcap_pkthdr *hdr, const uint8_t *buf) {
 	if (dump_file) {
@@ -331,8 +330,8 @@ void awdl_counter_add(struct ev_loop *loop, ev_timer *timer, int revents) {
 		awdl_state->election.master_counter = awdl_state->election.self_counter;
 		log_debug("Master counter: %d (self counter: %d)", awdl_state->election.master_counter, awdl_state->election.self_counter);
 	}
-
-	ev_timer_rearm(loop, timer, usec_to_sec(PI));
+	double pi = 3.14;
+	ev_timer_rearm(loop, timer, pi);
 }
 
 static void awdl_neighbor_add(struct awdl_peer *p, void *_io_state) {
