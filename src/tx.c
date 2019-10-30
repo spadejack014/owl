@@ -1,28 +1,11 @@
 /*
- * @Description: 
+ * @Description: delete several useless tlv functions
  * @Author: dingli
  * @Date: 2019-10-24 14:12:29
- * @LastEditTime: 2019-10-24 16:07:12
+ * @LastEditTime: 2019-10-29 15:04:04
  * @LastEditors: dingli
  */
-/*
- * OWL: an open Apple Wireless Direct Link (AWDL) implementation
- * Copyright (C) 2018  The Open Wireless Link Project (https://owlink.org)
- * Copyright (C) 2018  Milan Stute
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
+
 
 #include <stdint.h>
 #include <string.h>
@@ -66,7 +49,7 @@ int awdl_init_action(uint8_t *buf, enum awdl_action_type type) {
 	af->version = AWDL_VERSION_COMPAT;
 	af->subtype = type;
 	af->reserved = 0;
-	af->phy_tx = htole32(steady_time); /* TODO arbitrary offset */
+	af->phy_tx = htole32(steady_time); /* could add/minus 5TU*/
 	af->target_tx = htole32(steady_time);
 
 	return sizeof(struct awdl_action);
@@ -169,7 +152,7 @@ int awdl_init_chanseq_tlv(uint8_t *buf, const struct awdl_state *state) {
 
 	return len;
 }
-
+/*this could be deleted and the election could be completed by v2
 int awdl_init_election_params_tlv(uint8_t *buf, const struct awdl_state *state) {
 	struct awdl_election_params_tlv *tlv = (struct awdl_election_params_tlv *) buf;
 
@@ -181,7 +164,7 @@ int awdl_init_election_params_tlv(uint8_t *buf, const struct awdl_state *state) 
 	tlv->top_master_metric = htole32(state->election.master_metric);
 	tlv->self_metric = htole32(state->election.self_metric);
 
-	/* TODO unsure what flags do */
+
 	tlv->flags = 0;
 	tlv->id = htole16(0);
 
@@ -190,7 +173,7 @@ int awdl_init_election_params_tlv(uint8_t *buf, const struct awdl_state *state) 
 	tlv->pad[1] = 0;
 
 	return sizeof(struct awdl_election_params_tlv);
-}
+}*/
 
 int awdl_init_election_params_v2_tlv(uint8_t *buf, const struct awdl_state *state) {
 	struct awdl_election_params_v2_tlv *tlv = (struct awdl_election_params_v2_tlv *) buf;
@@ -218,9 +201,6 @@ int awdl_init_service_params_tlv(uint8_t *buf, const struct awdl_state *state __
 	tlv->type = AWDL_SERVICE_PARAMETERS_TLV;
 	tlv->length = htole16(sizeof(struct awdl_service_params_tlv) - sizeof(struct tl));
 
-	/* changing the SUI causes receiving nodes to flush their mDNS cache,
-	 * other than that, this TLV seems to be deprecated in AWDL v2+ */
-
 	tlv->unknown[0] = 0;
 	tlv->unknown[1] = 0;
 	tlv->unknown[2] = 0;
@@ -229,23 +209,23 @@ int awdl_init_service_params_tlv(uint8_t *buf, const struct awdl_state *state __
 
 	return sizeof(struct awdl_service_params_tlv);
 }
-
+/*
 int awdl_init_ht_capabilities_tlv(uint8_t *buf, const struct awdl_state *state __attribute__((unused))) {
 	struct awdl_ht_capabilities_tlv *tlv = (struct awdl_ht_capabilities_tlv *) buf;
 
 	tlv->type = AWDL_ENHANCED_DATA_RATE_CAPABILITIES_TLV;
 	tlv->length = htole16(sizeof(struct awdl_ht_capabilities_tlv) - sizeof(struct tl));
 
-	/* TODO extract capabilities from nl80211 (nl80211_band_attr) */
+
 	tlv->ht_capabilities = htole16(0x11ce);
 	tlv->ampdu_params = 0x1b;
-	tlv->rx_mcs = 0xff; /* one stream, all MCS */
+	tlv->rx_mcs = 0xff;
 
 	tlv->unknown = htole16(0);
 	tlv->unknown2 = htole16(0);
 
 	return sizeof(struct awdl_ht_capabilities_tlv);
-}
+}*/
 
 int awdl_init_data_path_state_tlv(uint8_t *buf, const struct awdl_state *state) {
 	struct awdl_data_path_state_tlv *tlv = (struct awdl_data_path_state_tlv *) buf;
@@ -375,7 +355,7 @@ int awdl_init_full_action_frame(uint8_t *buf, struct awdl_state *state, struct i
 	ptr += ieee80211_init_awdl_action_hdr(ptr, &state->self_address, &state->dst, ieee80211_state);
 	ptr += awdl_init_action(ptr, type);
 	ptr += awdl_init_sync_params_tlv(ptr, state);
-	ptr += awdl_init_election_params_tlv(ptr, state);
+	//ptr += awdl_init_election_params_tlv(ptr, state);
 	ptr += awdl_init_chanseq_tlv(ptr, state);
 	ptr += awdl_init_election_params_v2_tlv(ptr, state);
 	/*ptr += awdl_init_service_params_tlv(ptr, state);

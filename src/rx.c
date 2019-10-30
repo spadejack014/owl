@@ -1,21 +1,12 @@
 /*
- * OWL: an open Apple Wireless Direct Link (AWDL) implementation
- * Copyright (C) 2018  The Open Wireless Link Project (https://owlink.org)
- * Copyright (C) 2018  Milan Stute
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ * @Description: 
+ * @Author: dingli
+ * @Date: 2019-10-24 14:12:29
+ * @LastEditTime: 2019-10-24 21:09:36
+ * @LastEditors: dingli
  */
+
+
 
 #include <string.h>
 #include <errno.h>
@@ -107,29 +98,28 @@ int awdl_handle_chanseq_tlv(struct awdl_peer *src, const struct buf *val,
 wire_error:
 	return RX_TOO_SHORT;
 }
-
+/*
 int awdl_handle_election_params_tlv(struct awdl_peer *src, const struct buf *val,
                                     struct awdl_state *state __attribute__((unused))) {
 	uint8_t distance_to_master;
 
 	if (src->supports_v2)
-		return 0; /* if node supports election v2, we ignore v1 advertisements */
+		return 0; 
 
-	// READ_U8(val, 0, 0); /* ignore flags */
-	// READ_LE16(val, 1, 0); /* TODO ignore ID */
+	// READ_U8(val, 0, 0); 
+	// READ_LE16(val, 1, 0);
 	READ_U8(val, 3, &distance_to_master);
 	src->election.height = distance_to_master; // READ_U8(val, 3, &src->election.height);
-	// READ_U8(val, 4, 0); /* ignore unknown */
+	// READ_U8(val, 4, 0); 
 	READ_ETHER_ADDR(val, 5, &src->election.master_addr);
 	READ_LE32(val, 11, &src->election.master_metric);
 	READ_LE32(val, 15, &src->election.self_metric);
-	// READ_LE16(val, 19, 0); /* padding */
+	// READ_LE16(val, 19, 0);
 
 	return RX_OK;
 wire_error:
 	return RX_TOO_SHORT;
-}
-
+}*/
 int awdl_handle_election_params_v2_tlv(struct awdl_peer *src, const struct buf *val,
                                        struct awdl_state *state __attribute__((unused))) {
 	READ_LE32(val, 16, &src->election.height);
@@ -212,8 +202,8 @@ int awdl_handle_tlv(struct awdl_peer *src, uint8_t type, const struct buf *val,
 			return awdl_handle_sync_params_tlv(src, val, state, tsft);
 		case AWDL_CHAN_SEQ_TLV:
 			return awdl_handle_chanseq_tlv(src, val, state);
-		case AWDL_ELECTION_PARAMETERS_TLV:
-			return awdl_handle_election_params_tlv(src, val, state);
+		//case AWDL_ELECTION_PARAMETERS_TLV:
+			//return awdl_handle_election_params_tlv(src, val, state);
 		case AWDL_ELECTION_PARAMETERS_V2_TLV:
 			return awdl_handle_election_params_v2_tlv(src, val, state);
 		case AWDL_ARPA_TLV:
@@ -488,9 +478,6 @@ int awdl_rx(const struct buf *frame, struct buf ***data_frame, struct awdl_state
 
 	if (!memcmp(from, &state->self_address, sizeof(struct ether_addr)))
 		return RX_IGNORE_FROM_SELF; /* TODO ignore frames from self, should be filtered at pcap level */
-
-	//if (!(to->ether_addr_octet[0] & 0x01) && memcmp(to, &state->self_address, sizeof(struct ether_addr)))
-	//	return RX_IGNORE_NOPROMISC; /* neither broadcast/multicast nor unicast to me */
 
 	BUF_STRIP(frame, sizeof(struct ieee80211_hdr));
 

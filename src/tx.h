@@ -1,4 +1,11 @@
 /*
+ * @Description: 
+ * @Author: dingli
+ * @Date: 2019-10-24 14:12:29
+ * @LastEditTime: 2019-10-24 20:51:51
+ * @LastEditors: dingli
+ */
+/*
  * OWL: an open Apple Wireless Direct Link (AWDL) implementation
  * Copyright (C) 2018  The Open Wireless Link Project (https://owlink.org)
  * Copyright (C) 2018  Milan Stute
@@ -37,13 +44,16 @@ int awdl_init_sync_params_tlv(uint8_t *buf, const struct awdl_state *);
 
 int awdl_init_chanseq_tlv(uint8_t *buf, const struct awdl_state *);
 
+/*
 int awdl_init_election_params_tlv(uint8_t *buf, const struct awdl_state *);
+*/
 
 int awdl_init_election_params_v2_tlv(uint8_t *buf, const struct awdl_state *);
 
-int awdl_init_service_params_tlv(uint8_t *buf, const struct awdl_state *);
 
-int awdl_init_ht_capabilities_tlv(uint8_t *buf, const struct awdl_state *);
+int awdl_init_service_params_tlv(uint8_t *buf, const struct awdl_state *);
+/*
+int awdl_init_ht_capabilities_tlv(uint8_t *buf, const struct awdl_state *);*/
 
 int awdl_init_data_path_state_tlv(uint8_t *buf, const struct awdl_state *);
 

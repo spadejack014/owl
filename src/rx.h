@@ -1,21 +1,11 @@
 /*
- * OWL: an open Apple Wireless Direct Link (AWDL) implementation
- * Copyright (C) 2018  The Open Wireless Link Project (https://owlink.org)
- * Copyright (C) 2018  Milan Stute
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ * @Description: delete awdl_handle_election_params_tlv
+ * @Author: dingli
+ * @Date: 2019-10-24 14:12:29
+ * @LastEditTime: 2019-10-24 20:58:19
+ * @LastEditors: dingli
  */
+
 
 #ifndef AWDL_RX_H_
 #define AWDL_RX_H_
@@ -42,7 +32,7 @@ int awdl_handle_sync_params_tlv(struct awdl_peer *src, const struct buf *val, st
 
 int awdl_handle_chanseq_tlv(struct awdl_peer *src, const struct buf *val, struct awdl_state *state);
 
-int awdl_handle_election_params_tlv(struct awdl_peer *src, const struct buf *val, struct awdl_state *state);
+//int awdl_handle_election_params_tlv(struct awdl_peer *src, const struct buf *val, struct awdl_state *state);
 
 int awdl_handle_election_params_v2_tlv(struct awdl_peer *src, const struct buf *val,
                                        struct awdl_state *state);
