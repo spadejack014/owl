@@ -298,6 +298,18 @@ void awdl_switch_channel(struct ev_loop *loop, ev_timer *timer, int revents) {
 			set_channel(state->io.wlan_ifindex, chan_num_new);
 		awdl_state->channel.current = chan_new;
 	}
+		
+	if(awdl_state->election.height == 0)
+	{
+		awdl_state->election.self_counter += 1;
+		awdl_state->election.master_counter = awdl_state->election.self_counter;
+		log_debug("Master counter: %d (self counter: %d)", awdl_state->election.master_counter, awdl_state->election.self_counter);
+	}
+	else
+	{
+		
+	}
+	
 
 	next_aw = awdl_sync_next_aw_us(now, &awdl_state->sync);
 
@@ -380,11 +392,14 @@ void awdl_free(struct daemon_state *state) {
 	netutils_cleanup();
 }
 
+
+
+
 void awdl_schedule(struct ev_loop *loop, struct daemon_state *state) {
 
 	state->ev_state.loop = loop;
 
-	/* Timer for channel switching */
+	/* Timer for channel switching and counter adding*/
 	state->ev_state.chan_timer.data = (void *) state;
 	ev_timer_init(&state->ev_state.chan_timer, awdl_switch_channel, 0, 0);
 	ev_timer_start(loop, &state->ev_state.chan_timer);

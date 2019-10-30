@@ -1,10 +1,4 @@
-/*
- * @Description: 
- * @Author: dingli
- * @Date: 2019-10-24 14:12:29
- * @LastEditTime: 2019-10-30 14:27:31
- * @LastEditors: dingli
- */
+
 /*
  * OWL: an open Apple Wireless Direct Link (AWDL) implementation
  * Copyright (C) 2018  The Open Wireless Link Project (https://owlink.org)
@@ -36,7 +30,7 @@
 
 struct ev_state {
 	struct ev_loop *loop;
-	ev_timer mif_timer, psf_timer, tx_timer, tx_mcast_timer, chan_timer, peer_timer, counter_timer;
+	ev_timer mif_timer, psf_timer, tx_timer, tx_mcast_timer, chan_timer, peer_timer;
 	ev_io read_wlan, read_host;
 	ev_signal stats;
 };
