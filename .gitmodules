@@ -1,6 +1,6 @@
 [submodule "googletest"]
 	path = googletest
-	url = https://github.com/google/googletest.git
+	url = https://github.com/spadejack014/googletest
 [submodule "radiotap"]
 	path = radiotap
-	url = https://github.com/radiotap/radiotap-library.git
+	url = https://github.com/spadejack014/radiotap-library
